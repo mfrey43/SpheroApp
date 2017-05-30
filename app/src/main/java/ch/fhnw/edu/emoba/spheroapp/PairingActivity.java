@@ -1,5 +1,6 @@
 package ch.fhnw.edu.emoba.spheroapp;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,7 @@ import static ch.fhnw.edu.emoba.spherolib.SpheroRobotDiscoveryListener.SpheroRob
 
 public class PairingActivity extends AppCompatActivity implements SpheroRobotDiscoveryListener {
 
-    public static final boolean MOCK_MODE = true;
+    public static final boolean MOCK_MODE = false;
 
     TextView textView;
     SpheroRobotProxy proxy;
@@ -24,6 +25,13 @@ public class PairingActivity extends AppCompatActivity implements SpheroRobotDis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pairing);
         textView = (TextView)findViewById(R.id.textView);
+
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (mBluetoothAdapter == null) {
+            textView.setText("Bluetooth device must be enabled.");
+            return;
+        }
 
         if(MOCK_MODE){
             launchMainActivity();
