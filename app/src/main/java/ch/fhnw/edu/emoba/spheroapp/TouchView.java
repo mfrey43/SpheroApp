@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -13,7 +14,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CustomView extends View {
+public class TouchView extends View {
 
     private Paint linePaint;
     private Paint circlePaint;
@@ -25,7 +26,7 @@ public class CustomView extends View {
 
     private AtomicBoolean isCancelled = new AtomicBoolean();
 
-    public CustomView(Context context) {
+    public TouchView(Context context) {
         super(context);
 
         linePaint = new Paint();
@@ -36,14 +37,20 @@ public class CustomView extends View {
         circlePaint.setStrokeWidth(5);
         circlePaint.setStyle(Paint.Style.STROKE);
         circlePaint.setColor(Color.WHITE);
+
+        // wait until height and width are set to calculate middle
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                currentX = getWidth() / 2;
+                currentY = getHeight() / 2;
+            }
+        });
     }
 
     @Override
     public void onAttachedToWindow(){
         super.onAttachedToWindow();
-
-        currentX = getWidth();
-        currentY = getHeight();
 
         ScheduledExecutorService scheduler;
         // Created scheduler
