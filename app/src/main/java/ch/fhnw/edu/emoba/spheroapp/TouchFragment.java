@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
+
 
 public class TouchFragment extends Fragment {
 

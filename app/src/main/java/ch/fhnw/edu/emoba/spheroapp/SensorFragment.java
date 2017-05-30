@@ -13,12 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ch.fhnw.edu.emoba.spherolib.SpheroRobotFactory;
+import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
+import ch.fhnw.edu.emoba.spherolib.impl.SpheroMock;
+
 
 public class SensorFragment extends Fragment {
 
     private SensorEventListener sensorEventListener;
     private SensorManager sensorManager;
     private Sensor rotationSensor;
+
+    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.createRobot(PairingActivity.MOCK_MODE);
 
     public SensorFragment() {
         // Required empty public constructor
@@ -41,6 +47,8 @@ public class SensorFragment extends Fragment {
                 double speed = (Math.abs(deltaX) + Math.abs(deltaY)) * 2;
                 //Log.d("heading", Double.toString(heading));
                 //Log.d("speed", Double.toString(speed));
+
+                spheroRobotProxy.drive((float)heading, (float)speed);
             }
 
             @Override
@@ -91,5 +99,6 @@ public class SensorFragment extends Fragment {
         if(sensorManager != null && sensorEventListener != null){
             sensorManager.unregisterListener(sensorEventListener);
         }
+        spheroRobotProxy.drive(0, 0);
     }
 }

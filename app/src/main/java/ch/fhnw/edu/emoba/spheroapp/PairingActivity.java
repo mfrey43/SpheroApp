@@ -2,10 +2,8 @@ package ch.fhnw.edu.emoba.spheroapp;
 
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotDiscoveryListener;
@@ -16,10 +14,10 @@ import static ch.fhnw.edu.emoba.spherolib.SpheroRobotDiscoveryListener.SpheroRob
 
 public class PairingActivity extends AppCompatActivity implements SpheroRobotDiscoveryListener {
 
+    public static final boolean MOCK_MODE = true;
+
     TextView textView;
     SpheroRobotProxy proxy;
-
-    boolean skip = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +25,7 @@ public class PairingActivity extends AppCompatActivity implements SpheroRobotDis
         setContentView(R.layout.activity_pairing);
         textView = (TextView)findViewById(R.id.textView);
 
-        if(skip){
+        if(MOCK_MODE){
             launchMainActivity();
         }else{
             boolean onEmulator = Build.PRODUCT.startsWith("sdk");

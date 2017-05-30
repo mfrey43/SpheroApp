@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -15,6 +14,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import ch.fhnw.edu.emoba.spherolib.SpheroRobotFactory;
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
 import ch.fhnw.edu.emoba.spherolib.impl.SpheroMock;
 
@@ -33,7 +33,7 @@ public class TouchView extends View {
     private double maxVelocity;
     private ScheduledFuture viewTask;
 
-    SpheroRobotProxy sphero;
+    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.createRobot(PairingActivity.MOCK_MODE);
 
     private AtomicBoolean isCancelled = new AtomicBoolean();
 
@@ -72,8 +72,6 @@ public class TouchView extends View {
                 postInvalidate();
             }
         }, 50, 50, TimeUnit.MILLISECONDS);
-
-        sphero = new SpheroMock();
     }
 
     @Override
@@ -112,12 +110,13 @@ public class TouchView extends View {
             speed = 1;
         }
 
-        sphero.drive((float)heading, (float)speed);
+        spheroRobotProxy.drive((float)heading, (float)speed);
 
         return true;
     }
 
     public void reset(){
+        spheroRobotProxy.drive(0, 0);
         currentX = getWidth() / 2;
         currentY = getHeight() / 2;
 
