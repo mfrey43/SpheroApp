@@ -20,6 +20,9 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
+import ch.fhnw.edu.emoba.spherolib.impl.SpheroMock;
+
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    SpheroRobotProxy sphero = new SpheroMock();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,5 +123,9 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    public void drive(double heading, double speed){
+        sphero.drive((float)heading, (float)speed);
     }
 }

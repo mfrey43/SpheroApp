@@ -53,13 +53,7 @@ public class TouchView extends View {
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                currentX = getWidth() / 2;
-                currentY = getHeight() / 2;
-
-                int shorterEdgeLength = getWidth() < getHeight() ? getWidth() : getHeight();
-                maxRadius = shorterEdgeLength / 2;
-                minVelocity = Math.pow(deadZoneRadius, 2);
-                maxVelocity = Math.pow(maxRadius, 2);
+                reset();
             }
         });
     }
@@ -123,4 +117,13 @@ public class TouchView extends View {
         return true;
     }
 
+    public void reset(){
+        currentX = getWidth() / 2;
+        currentY = getHeight() / 2;
+
+        int shorterEdgeLength = getWidth() < getHeight() ? getWidth() : getHeight();
+        maxRadius = shorterEdgeLength / 2;
+        minVelocity = Math.pow(deadZoneRadius, 2);
+        maxVelocity = Math.pow(maxRadius, 2);
+    }
 }

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 public class TouchFragment extends Fragment {
 
+    TouchView touchView;
+
     public TouchFragment() {
         // Required empty public constructor
     }
@@ -16,6 +18,16 @@ public class TouchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return new TouchView(getContext());
+        touchView = new TouchView(getContext());
+        return touchView;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(!isVisibleToUser && touchView != null){
+            touchView.reset();
+        }
     }
 }
