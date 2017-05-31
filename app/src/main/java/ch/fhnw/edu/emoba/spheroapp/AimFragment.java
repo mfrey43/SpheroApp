@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
 
 public class AimFragment extends Fragment {
 
-    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.createRobot(PairingActivity.MOCK_MODE);
+    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.getActualRobotProxy();
 
     public AimFragment() {
         // Required empty public constructor
@@ -31,8 +32,10 @@ public class AimFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (!isVisibleToUser){
+        if (!isVisibleToUser && spheroRobotProxy != null){
+            spheroRobotProxy.setBackLedBrightness(1);
             spheroRobotProxy.setZeroHeading();
+            spheroRobotProxy.drive(1,0);
         }
     }
 }

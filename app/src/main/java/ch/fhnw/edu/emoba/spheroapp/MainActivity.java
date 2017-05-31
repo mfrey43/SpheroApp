@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import ch.fhnw.edu.emoba.spherolib.SpheroRobotFactory;
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
 import ch.fhnw.edu.emoba.spherolib.impl.SpheroMock;
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    SpheroRobotProxy sphero = new SpheroMock();
+    SpheroRobotProxy sphero = SpheroRobotFactory.getActualRobotProxy();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +127,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    double heading = 0;
+
+    public void goLeft(View view){
+        heading -= 10;
+        drive(heading, 0);
+    }
+
+    public void setZero(View view){
+        sphero.setZeroHeading();
+    }
+
+    public void goRight(View view){
+        heading += 10;
+        drive(heading, 0);
+    }
+
     public void drive(double heading, double speed){
-        sphero.drive((float)heading, (float)speed);
+        if(sphero != null){
+            sphero.drive((float)heading, (float)speed);
+        }
     }
 }

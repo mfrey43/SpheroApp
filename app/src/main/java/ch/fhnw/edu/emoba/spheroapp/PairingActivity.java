@@ -1,10 +1,14 @@
 package ch.fhnw.edu.emoba.spheroapp;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotDiscoveryListener;
@@ -18,7 +22,7 @@ public class PairingActivity extends AppCompatActivity implements SpheroRobotDis
     public static final boolean MOCK_MODE = false;
 
     TextView textView;
-    SpheroRobotProxy proxy;
+    SpheroRobotProxy proxy = SpheroRobotFactory.getActualRobotProxy();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,16 +32,22 @@ public class PairingActivity extends AppCompatActivity implements SpheroRobotDis
 
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        if (mBluetoothAdapter == null) {
+        if (mBluetoothAdapter == null && !MOCK_MODE) {
             textView.setText("Bluetooth device must be enabled.");
             return;
+        }
+
+        if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            Log.d("bluetooth", "denied");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+        }else{
+            Log.d("bluetooth", "granted");
         }
 
         if(MOCK_MODE){
             launchMainActivity();
         }else{
-            boolean onEmulator = Build.PRODUCT.startsWith("sdk");
-            proxy = SpheroRobotFactory.createRobot(onEmulator);
+            proxy = SpheroRobotFactory.createRobot(MOCK_MODE);
             proxy.setDiscoveryListener(this);
             proxy.startDiscovering(getApplicationContext());
         }
@@ -57,6 +67,7 @@ public class PairingActivity extends AppCompatActivity implements SpheroRobotDis
 
     @Override
     public void handleRobotChangedState(final SpheroRobotBluetoothNotification spheroRobotBluetoothNotification) {
+        Log.d("robotState", "changed");
         if(spheroRobotBluetoothNotification.equals(Online)){
             runOnUiThread(new Runnable() {
                 @Override

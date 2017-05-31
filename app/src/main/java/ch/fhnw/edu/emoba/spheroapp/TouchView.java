@@ -33,7 +33,7 @@ public class TouchView extends View {
     private double maxVelocity;
     private ScheduledFuture viewTask;
 
-    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.createRobot(PairingActivity.MOCK_MODE);
+    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.getActualRobotProxy();
 
     private AtomicBoolean isCancelled = new AtomicBoolean();
 
@@ -116,7 +116,9 @@ public class TouchView extends View {
     }
 
     public void reset(){
-        spheroRobotProxy.drive(0, 0);
+        if(spheroRobotProxy != null){
+            spheroRobotProxy.drive(0, 0);
+        }
         currentX = getWidth() / 2;
         currentY = getHeight() / 2;
 

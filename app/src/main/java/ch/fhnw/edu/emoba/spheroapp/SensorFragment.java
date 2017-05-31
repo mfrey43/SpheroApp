@@ -24,7 +24,7 @@ public class SensorFragment extends Fragment {
     private SensorManager sensorManager;
     private Sensor rotationSensor;
 
-    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.createRobot(PairingActivity.MOCK_MODE);
+    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.getActualRobotProxy();
 
     public SensorFragment() {
         // Required empty public constructor
@@ -48,7 +48,9 @@ public class SensorFragment extends Fragment {
                 //Log.d("heading", Double.toString(heading));
                 //Log.d("speed", Double.toString(speed));
 
-                spheroRobotProxy.drive((float)heading, (float)speed);
+                if(spheroRobotProxy != null){
+                    spheroRobotProxy.drive((float)heading, (float)speed);
+                }
             }
 
             @Override
@@ -99,6 +101,10 @@ public class SensorFragment extends Fragment {
         if(sensorManager != null && sensorEventListener != null){
             sensorManager.unregisterListener(sensorEventListener);
         }
-        spheroRobotProxy.drive(0, 0);
+        /*
+        if(spheroRobotProxy != null) {
+            spheroRobotProxy.drive(0, 0);
+        }
+        */
     }
 }

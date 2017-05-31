@@ -3,6 +3,12 @@
     package="ch.fhnw.edu.emoba.spheroapp">
     <uses-permission android:name="android.permission.BLUETOOTH">
     </uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN">
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION">
+    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET">
+    </uses-permission>
 
     <application
         android:allowBackup="true"
@@ -21,7 +27,10 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>
