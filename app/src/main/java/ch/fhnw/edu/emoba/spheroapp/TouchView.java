@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -17,6 +18,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotFactory;
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
 import ch.fhnw.edu.emoba.spherolib.impl.SpheroMock;
+
+import static ch.fhnw.edu.emoba.spheroapp.PairingActivity.MOCK_MODE;
 
 public class TouchView extends View {
 
@@ -116,9 +119,8 @@ public class TouchView extends View {
     }
 
     public void reset(){
-        if(spheroRobotProxy != null){
-            spheroRobotProxy.drive(0, 0);
-        }
+        spheroRobotProxy.drive(0, 0);
+
         currentX = getWidth() / 2;
         currentY = getHeight() / 2;
 

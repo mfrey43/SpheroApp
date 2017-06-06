@@ -17,6 +17,8 @@ import ch.fhnw.edu.emoba.spherolib.SpheroRobotFactory;
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
 import ch.fhnw.edu.emoba.spherolib.impl.SpheroMock;
 
+import static ch.fhnw.edu.emoba.spheroapp.PairingActivity.MOCK_MODE;
+
 
 public class SensorFragment extends Fragment {
 
@@ -48,9 +50,7 @@ public class SensorFragment extends Fragment {
                 //Log.d("heading", Double.toString(heading));
                 //Log.d("speed", Double.toString(speed));
 
-                if(spheroRobotProxy != null){
-                    spheroRobotProxy.drive((float)heading, (float)speed);
-                }
+                spheroRobotProxy.drive((float)heading, (float)speed);
             }
 
             @Override
@@ -101,10 +101,6 @@ public class SensorFragment extends Fragment {
         if(sensorManager != null && sensorEventListener != null){
             sensorManager.unregisterListener(sensorEventListener);
         }
-        /*
-        if(spheroRobotProxy != null) {
-            spheroRobotProxy.drive(0, 0);
-        }
-        */
+        spheroRobotProxy.drive(0, 0);
     }
 }

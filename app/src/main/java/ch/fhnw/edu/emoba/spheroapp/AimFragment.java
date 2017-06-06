@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotFactory;
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
+import ch.fhnw.edu.emoba.spherolib.impl.SpheroMock;
+
+import static ch.fhnw.edu.emoba.spheroapp.PairingActivity.MOCK_MODE;
 
 
 public class AimFragment extends Fragment {
@@ -24,6 +27,7 @@ public class AimFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_aim, container, false);
     }

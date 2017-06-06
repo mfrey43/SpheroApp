@@ -1,29 +1,19 @@
 package ch.fhnw.edu.emoba.spheroapp;
 
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotFactory;
 import ch.fhnw.edu.emoba.spherolib.SpheroRobotProxy;
-import ch.fhnw.edu.emoba.spherolib.impl.SpheroMock;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    SpheroRobotProxy sphero = SpheroRobotFactory.getActualRobotProxy();
+    SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.getActualRobotProxy();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setZero(View view){
-        sphero.setZeroHeading();
+        spheroRobotProxy.setZeroHeading();
     }
 
     public void goRight(View view){
@@ -144,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void drive(double heading, double speed){
-        if(sphero != null){
-            sphero.drive((float)heading, (float)speed);
-        }
+        spheroRobotProxy.drive((float)heading, (float)speed);
     }
 }

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,10 +18,10 @@ import static ch.fhnw.edu.emoba.spherolib.SpheroRobotDiscoveryListener.SpheroRob
 
 public class PairingActivity extends AppCompatActivity implements SpheroRobotDiscoveryListener {
 
-    public static final boolean MOCK_MODE = false;
+    public static final boolean MOCK_MODE = true;
 
     TextView textView;
-    SpheroRobotProxy proxy = SpheroRobotFactory.getActualRobotProxy();
+    SpheroRobotProxy spheroRobotProxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,35 +29,32 @@ public class PairingActivity extends AppCompatActivity implements SpheroRobotDis
         setContentView(R.layout.activity_pairing);
         textView = (TextView)findViewById(R.id.textView);
 
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        if (mBluetoothAdapter == null && !MOCK_MODE) {
-            textView.setText("Bluetooth device must be enabled.");
-            return;
-        }
-
-        if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            Log.d("bluetooth", "denied");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
-        }else{
-            Log.d("bluetooth", "granted");
-        }
-
         if(MOCK_MODE){
+            spheroRobotProxy = SpheroRobotFactory.createRobot(true);
             launchMainActivity();
         }else{
-            proxy = SpheroRobotFactory.createRobot(MOCK_MODE);
-            proxy.setDiscoveryListener(this);
-            proxy.startDiscovering(getApplicationContext());
-        }
+            BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
+            if (mBluetoothAdapter == null) {
+                textView.setText("Bluetooth device must be enabled.");
+                return;
+            }
+
+            if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                Log.d("bluetooth", "denied");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+            }else{
+                Log.d("bluetooth", "granted");
+            }
+
+            spheroRobotProxy = SpheroRobotFactory.createRobot(MOCK_MODE);
+            spheroRobotProxy.setDiscoveryListener(this);
+            spheroRobotProxy.startDiscovering(getApplicationContext());
+        }
     }
 
     private void launchMainActivity(){
         startActivity(new Intent(this, MainActivity.class));
-        if(proxy != null){
-            proxy.stopDiscovering();
-        }
     }
 
     private void updateText(String text){
