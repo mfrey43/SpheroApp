@@ -51,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        spheroRobotProxy.disconnect();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     double heading = 0;
 
     public void goLeft(View view){
-        heading -= 10;
+        heading += 10;
         drive(heading, 0);
     }
 
@@ -129,8 +134,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goRight(View view){
-        heading += 10;
+        heading -= 10;
         drive(heading, 0);
+    }
+
+    public void disconnect(View view){
+        spheroRobotProxy.disconnect();
     }
 
     public void drive(double heading, double speed){
