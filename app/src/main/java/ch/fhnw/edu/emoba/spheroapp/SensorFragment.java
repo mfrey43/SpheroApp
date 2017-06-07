@@ -25,6 +25,7 @@ public class SensorFragment extends Fragment {
     private SensorEventListener sensorEventListener;
     private SensorManager sensorManager;
     private Sensor rotationSensor;
+    private static final double MIN_ANGLE = 0.1;
 
     SpheroRobotProxy spheroRobotProxy = SpheroRobotFactory.getActualRobotProxy();
 
@@ -37,7 +38,7 @@ public class SensorFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
+        rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         sensorEventListener = new SensorEventListener() {
             @Override
@@ -47,11 +48,16 @@ public class SensorFragment extends Fragment {
 
                 double rad = Math.atan2(deltaX, deltaY); // start 0° at the top
                 double heading = rad * (180 / Math.PI) + 180;
-                double speed = (Math.abs(deltaX) + Math.abs(deltaY)) * 2;
+                double angleSum = Math.abs(deltaX) + Math.abs(deltaY);
+                double speed = (angleSum-MIN_ANGLE) * 2;
                 //Log.d("heading", Double.toString(heading));
                 //Log.d("speed", Double.toString(speed));
 
-                spheroRobotProxy.drive((float)heading, (float)speed);
+
+
+                if(angleSum > MIN_ANGLE){
+                    spheroRobotProxy.drive((float)heading, (float)speed);
+                }
             }
 
             @Override
