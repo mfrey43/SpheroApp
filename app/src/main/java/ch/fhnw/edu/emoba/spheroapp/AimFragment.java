@@ -36,10 +36,14 @@ public class AimFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (!isVisibleToUser && spheroRobotProxy != null){
+        if (spheroRobotProxy == null) return;
+
+        if (isVisibleToUser) {
             spheroRobotProxy.setBackLedBrightness(1);
-            spheroRobotProxy.setZeroHeading();
-            spheroRobotProxy.drive(1,0);
+            spheroRobotProxy.drive(0, 0);
+        } else {
+            spheroRobotProxy.setBackLedBrightness(0);
+            spheroRobotProxy.drive(0, 0);
         }
     }
 }

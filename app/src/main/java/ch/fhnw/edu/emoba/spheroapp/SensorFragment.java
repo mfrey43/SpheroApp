@@ -37,14 +37,15 @@ public class SensorFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
 
         sensorEventListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 double deltaX = event.values[0];
                 double deltaY = event.values[1];
-                double rad = Math.atan2(-deltaY, deltaX); // start 0° at the top
+
+                double rad = Math.atan2(deltaX, deltaY); // start 0° at the top
                 double heading = rad * (180 / Math.PI) + 180;
                 double speed = (Math.abs(deltaX) + Math.abs(deltaY)) * 2;
                 //Log.d("heading", Double.toString(heading));
