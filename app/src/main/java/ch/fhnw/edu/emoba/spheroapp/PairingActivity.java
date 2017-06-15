@@ -35,16 +35,13 @@ public class PairingActivity extends AppCompatActivity implements SpheroRobotDis
         }else{
             BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-            if (mBluetoothAdapter == null) {
-                textView.setText("Bluetooth device must be enabled.");
+            if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+                textView.setText(R.string.bluetooth_required);
                 return;
             }
 
             if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                Log.d("bluetooth", "denied");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
-            }else{
-                Log.d("bluetooth", "granted");
             }
 
             spheroRobotProxy = SpheroRobotFactory.createRobot(MOCK_MODE);
